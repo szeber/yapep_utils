@@ -66,13 +66,17 @@ require_once __DIR__ . '/config.php';
 
 $application = Application::getInstance();
 
+// Error handlers are disabled, uncomment them to use the default ones. See the error handler documentation for details.
+/*
 $application->getDiContainer()->getErrorHandlerRegistry()->addErrorHandler(new LoggingErrorHandler(
 	new SyslogLogger('error')
 ));
 
+
 $application->getDiContainer()->getErrorHandlerRegistry()->addErrorHandler(new DebugDataCreator(
 	new FileStorage('debugData')
 ));
+*/
 
 // Clean up the global scope
 unset($autoloader, $vendorClasspaths);
