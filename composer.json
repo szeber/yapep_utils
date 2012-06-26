@@ -1,0 +1,13 @@
+{
+    "name": "szeber/yapep_utilsr",
+    "description": "Generic utilities for the YapepBase framework",
+    "require": {
+        "szeber/yapep_base": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Zsolt Szeberenyi",
+            "email": "szeber@yapep.org"
+        }
+    ]
+}
