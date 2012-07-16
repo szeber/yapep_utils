@@ -2,7 +2,7 @@
     "name": "szeber/yapep_utilsr",
     "description": "Generic utilities for the YapepBase framework",
     "require": {
-        "szeber/yapep_base": "dev-master"
+        "szeber/yapep_base": "0.2.x-dev"
     },
     "authors": [
         {

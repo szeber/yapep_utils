@@ -1,17 +1,18 @@
 {
-    "hash": "b36653abbff63faa975eca2fa3578343",
+    "hash": "97cfecafeb67243bba252064a3e21a20",
     "packages": [
         {
             "package": "szeber/yapep_base",
-            "version": "dev-master",
-            "source-reference": "c9f4b4eac41748bf10977e3343a888d273632e72"
+            "version": "0.2.x-dev",
+            "source-reference": "22c14c6f7582f8d4df4935262bc2d6d43c73b710",
+            "commit-date": "1342443506"
         }
     ],
     "packages-dev": null,
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "szeber/yapep_base": 20
     }
