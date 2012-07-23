@@ -54,20 +54,29 @@ class TableGeneratorTemplate extends TemplateAbstract {
 	protected $_enums;
 
 	/**
+	 * KEy of the default connection what will be used by the class.
+	 *
+	 * @var string
+	 */
+	protected $_defaultConnection;
+
+	/**
 	 * Constructor
 	 *
-	 * @param string $_fields
-	 * @param string $_enums
-	 * @param string $_rootNamespace
-	 * @param string $_dbNamespace
-	 * @param string $_tableName
+	 * @param string $_fields              Key holding the fields of the table.
+	 * @param string $_enums               Key holding the enums of the table.
+	 * @param string $_rootNamespace       Key holding the root namespace of the class.
+	 * @param string $_dbNamespace         Key holding the db related namespace of the class.
+	 * @param string $_tableName           Key holding the name of the table.
+	 * @param string $_defaultConnection   Key holding the default connection.
 	 */
-	function __construct($_fields, $_enums, $_rootNamespace, $_dbNamespace, $_tableName) {
+	function __construct($_fields, $_enums, $_rootNamespace, $_dbNamespace, $_tableName, $_defaultConnection) {
 		$this->_fields = $_fields;
 		$this->_enums = $_enums;
 		$this->_rootNamespace = $_rootNamespace;
 		$this->_dbNamespace = $_dbNamespace;
 		$this->_tableName = $_tableName;
+		$this->_defaultConnection = $_defaultConnection;
 	}
 
 	/**
@@ -78,8 +87,8 @@ class TableGeneratorTemplate extends TemplateAbstract {
 ?>
 <?= "<?php\n" ?>
 /**
- * @package      <?= $this->get($this->_rootNamespace) . "\n" ?>
- * @subpackage   Dao\Table\<?= $this->get($this->_dbNamespace) . "\n" ?>
+ * @package    <?= $this->get($this->_rootNamespace) . "\n" ?>
+ * @subpackage Dao\Table\<?= $this->get($this->_dbNamespace) . "\n" ?>
  */
 
 namespace <?= $this->get($this->_rootNamespace) ?>\Dao\Table\<?= $this->get($this->_dbNamespace) ?>;
@@ -87,9 +96,9 @@ namespace <?= $this->get($this->_rootNamespace) ?>\Dao\Table\<?= $this->get($thi
 /**
  * Table class for the <?= $this->get($this->_tableName) ?> table.
  *
- * @package      <?= $this->get($this->_rootNamespace) . "\n" ?>
- * @subpackage   Dao\Table\<?= $this->get($this->_dbNamespace) . "\n" ?>
- * @todo         Auto-generated table class, review field and enum definition comments.
+ * @package    <?= $this->get($this->_rootNamespace) . "\n" ?>
+ * @subpackage Dao\Table\<?= $this->get($this->_dbNamespace) . "\n" ?>
+ * @todo       Auto-generated table class, review field and enum definition comments. [DbTableGenerator]
  */
 class <?= $tableGeneratorHelper->getClassNameFromTableName($this->get($this->_tableName)) ?>Table extends \YapepBase\Database\MysqlTable {
 
@@ -113,6 +122,16 @@ class <?= $tableGeneratorHelper->getClassNameFromTableName($this->get($this->_ta
 	 * @var string
 	 */
 	protected $tableName = '<?= addcslashes($this->get($this->_tableName), '\'') ?>';
+
+	/**
+	 * The default connection name what will be used for the database connection.
+	 *
+<?=($this->checkIsEmpty($this->_defaultConnection)
+	? ("\t" . ' * @todo In case you need real functionality, please provide an existent connection name. [DbTableGenerator]' . "\n\t * \n")
+	: '') ?>
+	 * @var string
+	 */
+	protected $defaultDbConnectionName = '<?=$this->get($this->_defaultConnection) ?>';
 
 	/**
 	 * Returns the fields of the described table.

@@ -31,7 +31,7 @@ use DbTableGenerator\View\Template\TableGeneratorTemplate;
 /**
  * Controller class for the database table generator batch script.
  *
- * Currenlty only MySQL is supported. The script can work with a mysql connection specified with command line switches,
+ * Currently only MySQL is supported. The script can work with a mysql connection specified with command line switches,
  * or a configuration set up in the framework's configuration system.
  *
  * Run the script with the --help switch for an explanation of the switches.
@@ -104,6 +104,13 @@ class TableGeneratorController extends BatchScript {
 	protected $dbNamespace;
 
 	/**
+	 * Default connection
+	 *
+	 * @var string
+	 */
+	protected $defaultConnection;
+
+	/**
 	 * The error message to show.
 	 *
 	 * @var string
@@ -157,25 +164,39 @@ class TableGeneratorController extends BatchScript {
 		$this->usageIndexes[self::USAGE_CONFIG] = $this->cliHelper->addUsage(
 			'Set up the connection from an already configured connection');
 
-		$this->cliHelper->addSwitch('h', 'host', 'DB server host name. Defaults to "localhost".', $this->usageIndexes[self::USAGE_FULL], true, 'host');
+		$this->cliHelper->addSwitch('h', 'host', 'DB server host name. Defaults to "localhost".',
+			$this->usageIndexes[self::USAGE_FULL], true, 'host');
 
-		$this->cliHelper->addSwitch('u', 'user', 'DB server username. Defaults to "root".', $this->usageIndexes[self::USAGE_FULL], true, 'username');
+		$this->cliHelper->addSwitch('u', 'user', 'DB server username. Defaults to "root".',
+			$this->usageIndexes[self::USAGE_FULL], true, 'username');
 
-		$this->cliHelper->addSwitch('p', 'password', 'DB server password for the specified user. Defaults to empty password.',
+		$this->cliHelper->addSwitch('p', 'password',
+			'DB server password for the specified user. Defaults to empty password.',
 			$this->usageIndexes[self::USAGE_FULL], true, 'password');
 
-		$this->cliHelper->addSwitch('P', 'port', 'DB server port. Defaults to 3306', $this->usageIndexes[self::USAGE_FULL], true, 'port');
+		$this->cliHelper->addSwitch('P', 'port', 'DB server port. Defaults to 3306',
+			$this->usageIndexes[self::USAGE_FULL], true, 'port');
 
-		$this->cliHelper->addSwitch('d', 'db-name', 'Database name', $this->usageIndexes[self::USAGE_FULL], false, 'databaseName');
+		$this->cliHelper->addSwitch('d', 'db-name', 'Database name',
+			$this->usageIndexes[self::USAGE_FULL], false, 'databaseName');
 
-		$this->cliHelper->addSwitch('c', 'connection-name', 'Configured connection name', $this->usageIndexes[self::USAGE_CONFIG], false, 'connectionName');
+		$this->cliHelper->addSwitch('c', 'connection-name', 'Configured connection name',
+			$this->usageIndexes[self::USAGE_CONFIG], false, 'connectionName');
 
-		$this->cliHelper->addSwitch('t', 'table', 'Table name', array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), false, 'tableName');
+		$this->cliHelper->addSwitch('t', 'table', 'Table name', array($this->usageIndexes[self::USAGE_FULL],
+			$this->usageIndexes[self::USAGE_CONFIG]), false, 'tableName');
 
-		$this->cliHelper->addSwitch('r', 'root-namespace', 'The root namespace to use', array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), false,
+		$this->cliHelper->addSwitch('', 'default-connection',
+			'The name of the default connection should be used by the class',
+			array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), true,
+			'defaultConnection');
+
+		$this->cliHelper->addSwitch('r', 'root-namespace', 'The root namespace to use',
+			array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), false,
 			'namespace');
 
-		$this->cliHelper->addSwitch('n','db-namespace', 'The database namespace to use', array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), false,
+		$this->cliHelper->addSwitch('n','db-namespace', 'The database namespace to use',
+			array($this->usageIndexes[self::USAGE_FULL], $this->usageIndexes[self::USAGE_CONFIG]), false,
 			'namespace');
 	}
 
@@ -219,6 +240,10 @@ class TableGeneratorController extends BatchScript {
 			} else {
 				$this->dbName = (empty($switches['db-name']) ? $switches['d'] : $switches['db-name']);
 			}
+
+			$this->defaultConnection = empty($switches['default-connection'])
+				? ''
+				: $switches['default-connection'];
 		} else {
 			$this->currentUsage = self::USAGE_CONFIG;
 			$connectionName = (empty($switches['connection-name']) ? $switches['c'] : $switches['connection-name']);
@@ -300,13 +325,15 @@ class TableGeneratorController extends BatchScript {
 		$fields = array();
 		$bo->getTableStructure('table-generator', $this->dbName, $this->tableName, $enums, $fields);
 		Application::getInstance()->getDiContainer()->getViewDo()->set(array(
-			'fields'        => $fields,
-			'enums'         => $enums,
-			'rootNamespace' => $this->rootNamespace,
-			'dbNamespace'   => $this->dbNamespace,
-			'tableName'     => $this->tableName,
+			'fields'            => $fields,
+			'enums'             => $enums,
+			'rootNamespace'     => $this->rootNamespace,
+			'dbNamespace'       => $this->dbNamespace,
+			'tableName'         => $this->tableName,
+			'defaultConnection' => $this->defaultConnection
 		));
-		$template = new TableGeneratorTemplate('fields', 'enums', 'rootNamespace', 'dbNamespace', 'tableName');
+		$template = new TableGeneratorTemplate('fields', 'enums', 'rootNamespace', 'dbNamespace', 'tableName',
+			'defaultConnection');
 		$template->render();
 		// Send structure to a View to render the php class
 	}
