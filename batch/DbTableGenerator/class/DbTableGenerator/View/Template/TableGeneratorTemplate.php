@@ -123,6 +123,21 @@ class <?= $tableGeneratorHelper->getClassNameFromTableName($this->get($this->_ta
 	 */
 	protected $tableName = '<?= addcslashes($this->get($this->_tableName), '\'') ?>';
 
+		/**
+	 * Associative array containing all possible values for the enum fields.
+	 *
+	 * @var array
+	 */
+	protected $enumValues = array(
+<?php foreach ($this->get($this->_enums) as $fieldName => $enum) : ?>
+		self::<?= $tableGeneratorHelper->getFieldConstant($fieldName) ?> => array(
+<?php foreach ($enum as $value) : ?>
+			self::<?= $tableGeneratorHelper->getEnumConstant($fieldName, $value) ?>,
+<?php endforeach ?>
+		),
+<?php endforeach ?>
+	);
+
 	/**
 	 * The default connection name what will be used for the database connection.
 	 *

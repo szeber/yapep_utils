@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/szeber/yapep_base.git",
-                "reference": "1972c5db6b95f5686d9ddb7f06e63039b2faf24e"
+                "reference": "909abc55eea8d3ec80519d5bf99bff022dd1035f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/szeber/yapep_base/zipball/1972c5db6b95f5686d9ddb7f06e63039b2faf24e",
-                "reference": "1972c5db6b95f5686d9ddb7f06e63039b2faf24e",
+                "url": "https://github.com/szeber/yapep_base/zipball/909abc55eea8d3ec80519d5bf99bff022dd1035f",
+                "reference": "909abc55eea8d3ec80519d5bf99bff022dd1035f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1348057587",
+            "time": "1349255600",
             "type": "library",
             "installation-source": "source",
             "autoload": {
