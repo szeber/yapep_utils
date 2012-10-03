@@ -123,7 +123,7 @@ class <?= $tableGeneratorHelper->getClassNameFromTableName($this->get($this->_ta
 	 */
 	protected $tableName = '<?= addcslashes($this->get($this->_tableName), '\'') ?>';
 
-		/**
+	/**
 	 * Associative array containing all possible values for the enum fields.
 	 *
 	 * @var array
