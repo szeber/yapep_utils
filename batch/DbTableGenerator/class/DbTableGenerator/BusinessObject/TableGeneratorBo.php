@@ -18,16 +18,25 @@ use YapepBase\Exception\Exception;
 class TableGeneratorBo {
 
 	/**
+	 * Creates the structure for the specified table
+	 *
 	 * @param string $connectionName   The name of the DB connection to use.
 	 * @param string $dbName           The name of the database.
 	 * @param string $tableName        The name of the table.
 	 * @param array  $enums            Array containing any enum values. (Outgoing param)
 	 * @param array  $fields           Array with the field names as keys, and comments as values. (Outgoing param)
+	 * @param string $tableComment     The comment for the table will be populated here. (Outgoing param)
+	 *
+	 * @return void
 	 */
-	public function getTableStructure($connectionName, $dbName, $tableName, array &$enums, array &$fields = array()) {
-		$structure = $this->getTableGeneratorDao()->getTableStructure($connectionName, $dbName, $tableName);
-		$fields    = array();
-		$enums     = array();
+	public function getTableStructure(
+		$connectionName, $dbName, $tableName, array &$enums, array &$fields = array(), &$tableComment = null
+	) {
+		$dao = $this->getTableGeneratorDao();
+		$tableComment = $dao->getTableComment($connectionName, $dbName, $tableName);
+		$structure    = $dao->getTableStructure($connectionName, $dbName, $tableName);
+		$fields       = array();
+		$enums        = array();
 		foreach ($structure as $field) {
 			$fields[$field['COLUMN_NAME']] = $field['COLUMN_COMMENT'];
 			if ($field['DATA_TYPE'] == 'enum' || $field['DATA_TYPE'] == 'set') {

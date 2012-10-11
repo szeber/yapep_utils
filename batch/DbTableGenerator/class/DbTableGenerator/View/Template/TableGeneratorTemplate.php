@@ -54,11 +54,18 @@ class TableGeneratorTemplate extends TemplateAbstract {
 	protected $_enums;
 
 	/**
-	 * KEy of the default connection what will be used by the class.
+	 * Key of the default connection what will be used by the class.
 	 *
 	 * @var string
 	 */
 	protected $_defaultConnection;
+
+	/**
+	 * Key to the table comment.
+	 *
+	 * @var string
+	 */
+	protected $_tableComment;
 
 	/**
 	 * Constructor
@@ -69,14 +76,18 @@ class TableGeneratorTemplate extends TemplateAbstract {
 	 * @param string $_dbNamespace         Key holding the db related namespace of the class.
 	 * @param string $_tableName           Key holding the name of the table.
 	 * @param string $_defaultConnection   Key holding the default connection.
+	 * @param string $_tableComment        Key to the table comment.
 	 */
-	function __construct($_fields, $_enums, $_rootNamespace, $_dbNamespace, $_tableName, $_defaultConnection) {
+	function __construct(
+		$_fields, $_enums, $_rootNamespace, $_dbNamespace, $_tableName, $_defaultConnection, $_tableComment
+	) {
 		$this->_fields = $_fields;
 		$this->_enums = $_enums;
 		$this->_rootNamespace = $_rootNamespace;
 		$this->_dbNamespace = $_dbNamespace;
 		$this->_tableName = $_tableName;
 		$this->_defaultConnection = $_defaultConnection;
+		$this->_tableComment = $_tableComment;
 	}
 
 	/**
@@ -95,6 +106,10 @@ namespace <?= $this->get($this->_rootNamespace) ?>\Dao\Table\<?= $this->get($thi
 
 /**
  * Table class for the <?= $this->get($this->_tableName) ?> table.
+<?php if (!$this->checkIsEmpty($this->_tableComment)) : ?>
+ *
+ * <?= $this->get($this->_tableComment) . "\n" ?>
+<?php endif; ?>
  *
  * @package    <?= $this->get($this->_rootNamespace) . "\n" ?>
  * @subpackage Dao\Table\<?= $this->get($this->_dbNamespace) . "\n" ?>

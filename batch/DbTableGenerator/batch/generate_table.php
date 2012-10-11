@@ -22,8 +22,6 @@ use YapepBase\Batch\BatchScript;
 use YapepBase\Batch\CliUserInterfaceHelper;
 use YapepBase\DependencyInjection\SystemContainer;
 use YapepBase\Exception\Exception;
-use YapepBase\Mime\MimeType;
-use YapepBase\View\ViewDo;
 
 use DbTableGenerator\BusinessObject\TableGeneratorBo;
 use DbTableGenerator\View\Template\TableGeneratorTemplate;
@@ -145,7 +143,7 @@ class TableGeneratorController extends BatchScript {
 	 *
 	 * @return void
 	 *
-	 * @throws YapepBase\Exception\Exception   To abort the run.
+	 * @throws \YapepBase\Exception\Exception   To abort the run.
 	 */
 	protected function abort() {
 		throw new Exception('Abort signal received');
@@ -320,20 +318,22 @@ class TableGeneratorController extends BatchScript {
 
 		$this->setupDbConnections('table-generator');
 
-		$bo     = new TableGeneratorBo();
-		$enums  = array();
-		$fields = array();
-		$bo->getTableStructure('table-generator', $this->dbName, $this->tableName, $enums, $fields);
+		$bo           = new TableGeneratorBo();
+		$enums        = array();
+		$fields       = array();
+		$tableComment = null;
+		$bo->getTableStructure('table-generator', $this->dbName, $this->tableName, $enums, $fields, $tableComment);
 		Application::getInstance()->getDiContainer()->getViewDo()->set(array(
 			'fields'            => $fields,
 			'enums'             => $enums,
 			'rootNamespace'     => $this->rootNamespace,
 			'dbNamespace'       => $this->dbNamespace,
 			'tableName'         => $this->tableName,
-			'defaultConnection' => $this->defaultConnection
+			'defaultConnection' => $this->defaultConnection,
+			'tableComment'      => $tableComment,
 		));
 		$template = new TableGeneratorTemplate('fields', 'enums', 'rootNamespace', 'dbNamespace', 'tableName',
-			'defaultConnection');
+			'defaultConnection', 'tableComment');
 		$template->render();
 		// Send structure to a View to render the php class
 	}
