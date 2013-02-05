@@ -1,0 +1,4 @@
+^\.idea
+syntax: glob
+vendor
+composer.phar

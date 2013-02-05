@@ -15,8 +15,11 @@ if (!empty($opts['e'])) {
 	}
 }
 
-require(__DIR__ . '/../../bootstrap.php');
-require(__DIR__ . '/config.php');
+require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/config.php';
+if (file_exists('/etc/yapep_base/yapep_utils/DbTableGenerator.conf.php')) {
+	require '/etc/yapep_base/yapep_utils/DbTableGenerator.conf.php';
+}
 
 $diContainer = Application::getInstance()->getDiContainer();
 

@@ -245,7 +245,7 @@ class TableGeneratorController extends BatchScript {
 		} else {
 			$this->currentUsage = self::USAGE_CONFIG;
 			$connectionName = (empty($switches['connection-name']) ? $switches['c'] : $switches['connection-name']);
-			$connection     = Config::getInstance()->get('application.database.' . $connectionName . '.ro.*');
+			$connection     = Config::getInstance()->get('resource.database.' . $connectionName . '.ro.*');
 			if (empty($connection) || !isset($connection['host']) || !isset($connection['database'])) {
 				$this->cliHelper->setErrorMessage('Invalid connection configuration');
 				$haveError = true;

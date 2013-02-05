@@ -1,8 +1,8 @@
 {
-    "name": "szeber/yapep_utilsr",
+    "name": "szeber/yapep_utils",
     "description": "Generic utilities for the YapepBase framework",
     "require": {
-        "szeber/yapep_base": "0.2.x-dev"
+        "szeber/yapep_base": "0.3.x-dev"
     },
     "authors": [
         {

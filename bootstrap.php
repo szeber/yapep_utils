@@ -3,16 +3,9 @@
  * Basic bootstrap commands what every applications should use.
  */
 
-use YapepBase\ErrorHandler\LoggingErrorHandler;
-use YapepBase\ErrorHandler\StrictErrorHandler;
-use YapepBase\Storage\FileStorage;
-use YapepBase\ErrorHandler\DebugDataCreator;
-use YapepBase\Config;
 use YapepBase\Autoloader\SimpleAutoloader;
-use YapepBase\Event\Event;
 use YapepBase\Application;
 use YapepBase\DependencyInjection\SystemContainer;
-use YapepBase\Log\SyslogLogger;
 
 /** Environment name for development. */
 define('ENVIRONMENT_DEV', 'dev');
