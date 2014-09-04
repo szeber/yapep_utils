@@ -32,14 +32,7 @@ define('VENDOR_DIR', realpath(ROOT_DIR . '/vendor'));
 /** The name of the application */
 define('PROGRAM_NAME', 'yapep_utils');
 
-$vendorClasspaths = require_once VENDOR_DIR . '/composer/autoload_namespaces.php';
-
-define('YAPEP_BASE_DIR', $vendorClasspaths['YapepBase']);
-
-/** Require the simple autoloader */
-require_once YAPEP_BASE_DIR . '/YapepBase/Autoloader/AutoloaderBase.php';
-require_once YAPEP_BASE_DIR . '/YapepBase/Autoloader/SimpleAutoloader.php';
-require_once YAPEP_BASE_DIR . '/YapepBase/Autoloader/AutoloaderRegistry.php';
+require VENDOR_DIR . '/autoload.php';
 
 // Autoloader setup
 $autoloader = new SimpleAutoloader();
@@ -48,9 +41,6 @@ if (defined('APP_ROOT')) {
 }
 
 $autoloader->addClassPath(BASE_DIR);
-
-// Add libraries tot the autoloader path
-$autoloader->addClassPath(array_values($vendorClasspaths));
 
 $autoloader->register();
 
